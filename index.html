@@ -1326,12 +1326,12 @@ function downloadTXT(){
     `  Počáteční kapitál:    ${d.capital.toLocaleString('cs-CZ')} Kč`,
     `  Roční inflace:        ${d.inflation} %`,
     `  Celkem investováno:   ${d.totalInvested.toLocaleString('cs-CZ')} Kč`,'',
-    sep,`  CÍL 1 — "${d.g1name}"  (10 let, 1996–2005)`,sep,
+    sep,`  CÍL 1 — "${d.g1name}"  (10 let, )`,sep,
     `  Cílová částka:        ${d.g1target.toLocaleString('cs-CZ')} Kč`,
     `  Dosažená hodnota:     ${d.g1value.toLocaleString('cs-CZ')} Kč`,
     `  Splněno:              ${d.g1pct} %   ${d.g1ok?'✓ SPLNĚNO':'✗ NESPLNĚNO'}`,
     `  XIRR:                 ${d.xirr1!==null?d.xirr1+' %':'—'}`,'',
-    sep,`  CÍL 2 — "${d.g2name}"  (30 let, 1996–2025)`,sep,
+    sep,`  CÍL 2 — "${d.g2name}"  (30 let, )`,sep,
     `  Cílová částka:        ${d.g2target.toLocaleString('cs-CZ')} Kč`,
     `  Dosažená hodnota:     ${d.g2value.toLocaleString('cs-CZ')} Kč`,
     `  Reálná hodnota:       ${d.g2real.toLocaleString('cs-CZ')} Kč`,
@@ -1340,7 +1340,7 @@ function downloadTXT(){
     sep,'  CELKOVÉ VÝSLEDKY',sep,
     `  Čistý výnos:          ${d.netGain>=0?'+':''}${d.netGain.toLocaleString('cs-CZ')} Kč`,
     `  Ztráta inflací:       -${d.inflationLoss.toLocaleString('cs-CZ')} Kč`,'',
-    sep,'  Invest Gym 30 let · Reálná data 1996–2025',sep,
+    sep,'  Invest Gym 30 let · Reálná data ',sep,
   ];
   const blob=new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'});
   const url=URL.createObjectURL(blob);
