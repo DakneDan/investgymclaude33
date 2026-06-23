@@ -1,0 +1,1370 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+<title>Invest Gym — 30 let</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Source+Sans+3:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --bg:#0f1b2d;--surf:#1a2e4a;--surf2:#213554;
+  --bdr:rgba(255,255,255,.1);--bdr2:rgba(255,255,255,.18);
+  --tx:#e8edf4;--tx2:#8fa8c8;--tx3:#5a7a9a;
+  --blue:#3b82f6;--blue-d:#1d4ed8;--green:#10b981;
+  --amber:#f59e0b;--red:#ef4444;--r:10px;--rs:6px;
+}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--bg);color:var(--tx);font-family:'Source Sans 3',system-ui,sans-serif;font-size:15px;line-height:1.5;min-height:100vh;-webkit-tap-highlight-color:transparent}
+.page{max-width:960px;margin:0 auto;padding:1rem .875rem 4rem}
+
+/* LOGO */
+.logo{text-align:center;padding:1.5rem 0 1.2rem;border-bottom:.5px solid var(--bdr);margin-bottom:1.25rem}
+.logo-mark{font-family:'Playfair Display',Georgia,serif;font-size:clamp(26px,6vw,38px);font-weight:900;letter-spacing:-1px;color:var(--tx)}
+.logo-mark span{color:var(--amber)}
+.logo-sub{font-size:11px;color:var(--tx3);letter-spacing:2px;text-transform:uppercase;margin-top:3px}
+.logo-badge{display:inline-block;background:rgba(239,68,68,.15);color:#fca5a5;font-size:11px;font-weight:600;padding:3px 10px;border-radius:20px;margin-top:6px;letter-spacing:1px}
+
+/* CARDS */
+.card{background:var(--surf);border:.5px solid var(--bdr);border-radius:var(--r);padding:1rem 1.1rem;margin-bottom:.875rem}
+.ctitle{font-size:11px;font-weight:600;color:var(--tx2);text-transform:uppercase;letter-spacing:.6px;margin-bottom:.875rem;display:flex;align-items:center;gap:7px;flex-wrap:wrap}
+
+/* GRIDS */
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:.875rem}
+.g3{display:grid;grid-template-columns:1fr 1fr 1fr;gap:.875rem}
+.g4{display:grid;grid-template-columns:repeat(4,1fr);gap:.6rem}
+.g5{display:grid;grid-template-columns:repeat(5,1fr);gap:.6rem}
+@media(max-width:700px){.g2,.g3{grid-template-columns:1fr}.g4,.g5{grid-template-columns:1fr 1fr}}
+@media(max-width:380px){.g4,.g5{grid-template-columns:1fr}}
+
+/* BADGES */
+.badge{display:inline-flex;align-items:center;font-size:10px;font-weight:600;padding:2px 7px;border-radius:20px;white-space:nowrap}
+.bg1{background:rgba(16,185,129,.15);color:#10b981}
+.bg2{background:rgba(59,130,246,.15);color:#93c5fd}
+.bgd{background:rgba(255,255,255,.07);color:var(--tx2)}
+.bgr{background:rgba(239,68,68,.15);color:#fca5a5}
+
+/* METRICS */
+.metric{background:var(--surf2);border:.5px solid var(--bdr);border-radius:var(--rs);padding:.7rem .875rem;text-align:center}
+.mlabel{font-size:10px;color:var(--tx3);margin-bottom:2px;text-transform:uppercase;letter-spacing:.4px}
+.mval{font-size:clamp(12px,3vw,16px);font-weight:700;font-family:'JetBrains Mono',monospace;color:var(--tx);word-break:break-all}
+.mval.gr{color:var(--green)}.mval.rd{color:var(--red)}.mval.am{color:var(--amber)}.mval.bl{color:#93c5fd}
+
+/* INPUTS */
+.frow{display:flex;align-items:center;gap:8px;margin-bottom:9px}
+.frow label{font-size:12px;color:var(--tx2);flex:0 0 155px;white-space:nowrap}
+.frow-in{display:flex;gap:8px;align-items:center;flex:1;min-width:0}
+@media(max-width:560px){.frow{flex-direction:column;align-items:stretch;gap:4px}.frow label{flex:none}}
+
+.tinp{width:100%;background:var(--surf2);border:.5px solid var(--bdr2);border-radius:var(--rs);color:var(--tx);font-size:14px;padding:8px 12px;outline:none;font-family:inherit;-webkit-appearance:none}
+.tinp:focus{border-color:var(--blue)}.tinp::placeholder{color:var(--tx3)}
+
+input[type=range]{flex:1;-webkit-appearance:none;appearance:none;height:4px;background:var(--surf2);border-radius:2px;outline:none;cursor:pointer;min-width:0}
+input[type=range]::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--blue);cursor:pointer;border:3px solid var(--bg)}
+input[type=range]::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--blue);cursor:pointer;border:3px solid var(--bg)}
+.ninp{width:90px;background:var(--surf2);border:.5px solid var(--bdr2);border-radius:var(--rs);color:var(--tx);font-size:13px;font-family:'JetBrains Mono',monospace;padding:6px 8px;text-align:right;outline:none;flex-shrink:0;-webkit-appearance:none;-moz-appearance:textfield}
+.ninp:focus{border-color:var(--blue)}.ninp::placeholder{color:var(--tx3)}
+.ninp::-webkit-outer-spin-button,.ninp::-webkit-inner-spin-button{-webkit-appearance:none}
+
+.mbanner{background:rgba(59,130,246,.08);border:.5px solid rgba(59,130,246,.2);border-radius:var(--rs);padding:8px 12px;font-size:12px;color:var(--tx2);margin-bottom:.875rem;display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:4px}
+.mbanner strong{color:#93c5fd;font-family:'JetBrains Mono',monospace}
+
+/* ALLOC ROWS */
+.arow{display:flex;align-items:center;gap:6px;margin-bottom:7px}
+.adot{width:9px;height:9px;border-radius:2px;flex-shrink:0}
+.alabel{font-size:12px;color:var(--tx2);flex:0 0 148px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+@media(max-width:420px){.alabel{flex:0 0 100px;font-size:11px}}
+.arow input[type=range]{flex:1;height:3px}
+.arow input[type=range]::-webkit-slider-thumb{width:20px;height:20px}
+.apct{font-size:12px;font-weight:600;font-family:'JetBrains Mono',monospace;color:var(--tx);min-width:36px;text-align:right}
+.anum{width:46px;background:var(--surf2);border:.5px solid var(--bdr);border-radius:4px;color:var(--tx);font-size:11px;font-family:'JetBrains Mono',monospace;padding:3px 4px;text-align:right;outline:none;-webkit-appearance:none;-moz-appearance:textfield}
+.anum::-webkit-outer-spin-button,.anum::-webkit-inner-spin-button{-webkit-appearance:none}
+.atotal{display:flex;align-items:center;gap:6px;margin-top:5px}
+.abar{flex:1;height:4px;background:var(--surf2);border-radius:2px;overflow:hidden}
+.afill{height:100%;border-radius:2px;transition:width .3s}
+.warn{font-size:11px;color:var(--red);margin-top:4px;display:none}
+
+/* BUTTONS */
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:6px;padding:11px 20px;border-radius:var(--rs);border:.5px solid var(--bdr2);background:transparent;color:var(--tx);font-size:14px;font-weight:500;cursor:pointer;transition:background .15s;font-family:inherit;touch-action:manipulation;min-height:44px}
+.btn:active{opacity:.85}.btnp{background:var(--blue);border-color:var(--blue-d);color:#fff}.btnp:active{background:var(--blue-d)}
+.brow{display:flex;gap:8px;align-items:center;margin-top:1.1rem;flex-wrap:wrap}
+@media(max-width:500px){.btn{flex:1;font-size:13px}}
+
+/* TIMELINE */
+.tl-wrap{background:var(--surf);border:.5px solid var(--bdr);border-radius:var(--r);padding:.75rem 1rem;margin-bottom:.875rem;overflow-x:auto}
+.tl-top{display:flex;align-items:center;margin-bottom:6px}
+.tl-lbl{font-size:11px;color:var(--tx3);margin-right:8px;white-space:nowrap;flex-shrink:0}
+.tl-segs{display:flex;align-items:flex-end;gap:2px;flex:1}
+.tl-item{display:flex;flex-direction:column;align-items:center;flex:1;min-width:14px}
+.tl-s{width:100%;height:6px;border-radius:2px;background:var(--surf2);border:.5px solid var(--bdr);transition:background .3s;margin-bottom:2px}
+.tl-s.done{background:var(--blue);border-color:var(--blue-d)}
+.tl-s.active{background:#93c5fd;border-color:var(--blue)}
+.tl-s.g1d{background:var(--green);border-color:#059669}
+.tl-s.crisis{background:var(--red);border-color:#b91c1c}
+.tl-s.good{background:#10b981}
+.tl-n{font-size:7px;color:var(--tx3)}
+.tl-legend{display:flex;flex-wrap:wrap;gap:10px;font-size:10px;color:var(--tx3)}
+.tl-leg-item{display:flex;align-items:center;gap:4px}
+.tl-dot{width:8px;height:8px;border-radius:2px;flex-shrink:0}
+
+/* TABS */
+.tabs{display:flex;gap:2px;margin-bottom:.875rem;border-bottom:.5px solid var(--bdr);overflow-x:auto}
+.tab{padding:8px 12px;border-radius:var(--rs) var(--rs) 0 0;border:.5px solid transparent;background:transparent;color:var(--tx2);font-size:12px;font-weight:500;cursor:pointer;font-family:inherit;border-bottom:none;position:relative;bottom:-.5px;white-space:nowrap;min-height:36px}
+.tab.active{background:var(--surf);border-color:var(--bdr);border-bottom-color:var(--surf);color:var(--tx)}
+
+/* ROUND CARD */
+.round-card{background:var(--surf2);border:.5px solid var(--bdr);border-radius:var(--rs);padding:10px 14px;margin-bottom:.875rem}
+.round-title{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:3px}
+.round-desc{font-size:12px;color:var(--tx2)}
+.crisis-badge{background:rgba(239,68,68,.15);color:#fca5a5;font-size:11px;font-weight:600;padding:2px 8px;border-radius:12px;margin-left:8px}
+
+/* GOAL CARDS */
+.goalg{display:grid;grid-template-columns:1fr 1fr;gap:.875rem;margin-bottom:.875rem}
+.gcard{background:var(--surf);border:.5px solid var(--bdr);border-radius:var(--r);padding:1rem 1.1rem}
+.gctitle{font-size:11px;color:var(--tx2);margin-bottom:5px;display:flex;align-items:center;gap:5px;font-weight:600}
+.gdream{font-size:10px;color:var(--tx3);font-style:italic;margin-bottom:4px}
+.gname{font-size:13px;font-weight:600;color:var(--tx);margin-bottom:6px}
+.gval{font-size:clamp(14px,4vw,19px);font-weight:700;font-family:'JetBrains Mono',monospace;margin-bottom:2px;word-break:break-all}
+.pbar{height:5px;background:var(--surf2);border-radius:3px;overflow:hidden;margin:5px 0 3px}
+.pfill{height:100%;border-radius:3px;transition:width .4s}
+
+/* TABLE */
+.tscroll{overflow-x:auto;-webkit-overflow-scrolling:touch}
+table{width:100%;border-collapse:collapse;font-size:12px;min-width:480px}
+thead th{text-align:left;padding:6px 7px;color:var(--tx3);font-weight:500;font-size:11px;text-transform:uppercase;border-bottom:.5px solid var(--bdr)}
+tbody td{padding:6px 7px;border-bottom:.5px solid rgba(255,255,255,.04);color:var(--tx);font-family:'JetBrains Mono',monospace;font-size:11px}
+tbody tr:last-child td{border-bottom:none}
+tbody tr.crr td{background:rgba(239,68,68,.06)}
+tbody tr:hover td{background:rgba(255,255,255,.02)}
+
+/* CHARTS */
+.cwrap{position:relative;width:100%;height:280px}
+.cwrap-sm{position:relative;width:100%;height:200px}
+.cleg{display:flex;flex-wrap:wrap;gap:10px;margin-top:7px;font-size:11px;color:var(--tx2)}
+.cleg span{display:flex;align-items:center;gap:4px}
+.ldot{width:10px;height:3px;border-radius:2px;flex-shrink:0}
+
+/* RESULT ITEMS */
+.ri{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:.5px solid rgba(255,255,255,.04);font-size:13px;gap:8px}
+.ri:last-child{border-bottom:none}
+.rl{color:var(--tx2);flex:1}.rv{font-family:'JetBrains Mono',monospace;font-weight:600;text-align:right;font-size:12px}
+
+/* SPLIT */
+.split-block{background:rgba(16,185,129,.06);border:.5px solid rgba(16,185,129,.25);border-radius:var(--rs);padding:10px 14px;margin-bottom:1rem}
+.split-title{font-size:11px;font-weight:600;color:var(--green);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px}
+.split-bar{display:flex;height:8px;border-radius:4px;overflow:hidden;margin:8px 0 5px}
+.split-c1{background:var(--green);transition:width .2s}
+.split-c2{background:#3b82f6;transition:width .2s}
+
+/* REALLOC MODAL */
+.rov{position:fixed;inset:0;background:rgba(5,10,20,.82);z-index:90;display:flex;align-items:flex-end;justify-content:center;opacity:0;pointer-events:none;transition:opacity .25s}
+@media(min-width:600px){.rov{align-items:center;padding:1rem}}
+.rov.open{opacity:1;pointer-events:all}
+.rmod{background:var(--surf);border-top:.5px solid var(--bdr2);border-radius:var(--r) var(--r) 0 0;padding:1.25rem 1rem 2.5rem;width:100%;max-width:800px;max-height:92vh;overflow-y:auto;-webkit-overflow-scrolling:touch;animation:slideUp .3s ease}
+@media(min-width:600px){.rmod{border-radius:var(--r);border:.5px solid var(--bdr2)}}
+@keyframes slideUp{from{transform:translateY(40px);opacity:0}to{transform:translateY(0);opacity:1}}
+.rmod-title{font-size:17px;font-weight:700;color:var(--tx);margin-bottom:3px}
+.rmod-sub{font-size:12px;color:var(--tx2);margin-bottom:1rem}
+.drag-handle{width:36px;height:4px;background:var(--bdr2);border-radius:2px;margin:0 auto 1rem}
+
+/* EXPORT */
+.status-ok{background:rgba(16,185,129,.12);border:.5px solid rgba(16,185,129,.3);color:#10b981;padding:8px 12px;border-radius:var(--rs);font-size:12px;margin-top:8px}
+.status-err{background:rgba(239,68,68,.12);border:.5px solid rgba(239,68,68,.3);color:#fca5a5;padding:8px 12px;border-radius:var(--rs);font-size:12px;margin-top:8px}
+.status-loading{background:rgba(59,130,246,.1);border:.5px solid rgba(59,130,246,.25);color:#93c5fd;padding:8px 12px;border-radius:var(--rs);font-size:12px;margin-top:8px}
+
+/* ASSET RETURN ROWS (year result panel) */
+.ar-row{display:flex;align-items:center;gap:8px;padding:6px 0;border-bottom:.5px solid var(--bdr)}
+.ar-row:last-child{border-bottom:none}
+.ar-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.ar-name{font-size:12px;color:var(--tx2);flex:0 0 152px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.ar-bar-wrap{flex:1;height:8px;background:var(--surf2);border-radius:4px;overflow:hidden;position:relative}
+.ar-bar{position:absolute;top:0;height:100%;border-radius:4px;transition:width .5s}
+.ar-val{font-size:13px;font-weight:600;font-family:'JetBrains Mono',monospace;min-width:64px;text-align:right;flex-shrink:0}
+.ar-arrow{font-size:10px;margin-left:2px}
+
+/* REVEAL TABLE */
+.rtbl{width:100%;border-collapse:collapse;font-size:12px}
+.rtbl th{text-align:left;padding:6px 8px;color:var(--tx3);font-size:11px;text-transform:uppercase;letter-spacing:.4px;border-bottom:.5px solid var(--bdr);font-weight:500}
+.rtbl td{padding:6px 8px;border-bottom:.5px solid rgba(255,255,255,.04);vertical-align:top}
+.rtbl tr:last-child td{border-bottom:none}
+.rtbl tr.crisis-row td{background:rgba(239,68,68,.06)}
+.rtbl tr.crisis-row .rnd-num{color:#fca5a5;font-weight:700}
+.rtbl .rnd-num{font-family:'JetBrains Mono',monospace;font-weight:600;color:var(--tx);white-space:nowrap}
+.rtbl .rnd-yr{font-family:'JetBrains Mono',monospace;color:var(--amber);font-weight:600}
+.rtbl .rnd-era{color:var(--tx2);font-size:12px}
+.rtbl .rnd-crisis{color:#fca5a5;font-size:11px;margin-top:2px}
+.era-group{display:inline-block;background:rgba(255,255,255,.06);border-radius:3px;padding:1px 6px;font-size:10px;color:var(--tx3);margin-top:2px}
+
+.sep{height:.5px;background:var(--bdr);margin:.875rem 0}
+.hidden{display:none!important}
+</style>
+</head>
+<body>
+<div class="page">
+
+<!-- LOGO -->
+<div class="logo">
+  <div class="logo-mark">Invest<span>Gym</span></div>
+  <div class="logo-sub">Simulátor investování · Reálná data 1996–2025</div>
+  <div class="logo-badge">30 LET · HYBRIDNÍ VERZE</div>
+</div>
+
+<!-- ══════════ SETUP ══════════ -->
+<div id="setup-panel">
+  <div class="card" style="border-color:rgba(239,68,68,.2)">
+    <div class="ctitle">ℹ️ O této verzi</div>
+    <p style="font-size:13px;color:var(--tx2);line-height:1.7">Simulace používá <strong style="color:var(--tx)">reálná historická data</strong> aktiv za roky 1996–2025. Roky 1–10 jsou vaše volná alokace pro <strong style="color:#10b981">Cíl 1</strong> (10letý horizont). Od roku 11 do roku 30 investujete pouze na <strong style="color:#93c5fd">Cíl 2</strong>. Každé kolo = 1 skutečný rok. Zažijete dot-com krach (2000–2002), finanční krizi (2008), COVID (2020) i inflační šok (2022).</p>
+  </div>
+
+  <div class="card">
+    <div class="ctitle">👤 Účastník</div>
+    <div class="frow"><label>Jméno a příjmení</label><input type="text" id="participant-name" class="tinp" placeholder="Např. Jan Novák…"></div>
+  </div>
+
+  <div class="card">
+    <div class="ctitle">⚙ Základní parametry</div>
+    <div class="frow"><label>Počáteční kapitál (Kč)</label>
+      <div class="frow-in"><input type="range" id="s-cap" min="0" max="500000" step="1000" value="0"><input type="number" id="n-cap" class="ninp" min="0" step="1000" placeholder="0"></div></div>
+    <div class="frow"><label>Roční inflace (%)</label>
+      <div class="frow-in"><input type="range" id="s-inf" min="0" max="15" step="0.5" value="0"><input type="number" id="n-inf" class="ninp" min="0" max="15" step="0.5" placeholder="0"></div></div>
+    <div class="frow"><label>Počáteční měs. úložka (Kč)</label>
+      <div class="frow-in"><input type="range" id="s-mon" min="0" max="50000" step="100" value="0"><input type="number" id="n-mon" class="ninp" min="0" step="100" placeholder="0"></div></div>
+    <div class="mbanner"><span>Roční příspěvek:</span><strong id="annual-prev">0 Kč</strong></div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ctitle">🎯 Cíl 1 — 10 let <span class="badge bg1">Kola 1–10</span></div>
+      <p style="font-size:12px;color:var(--tx2);margin-bottom:8px">Pojmenujte svůj 10letý sen:</p>
+      <input type="text" id="g1name" class="tinp" placeholder="Např. Vlastní byt…" style="margin-bottom:10px">
+      <div class="frow"><label>Cílová částka (Kč)</label>
+        <div class="frow-in"><input type="range" id="s-g1t" min="0" max="2000000" step="5000" value="0"><input type="number" id="n-g1t" class="ninp" min="0" step="5000" placeholder="0"></div></div>
+      <div class="frow"><label>Podíl kapitálu pro C1 (%)</label>
+        <div class="frow-in"><input type="range" id="s-g1s" min="0" max="100" step="5" value="0"><input type="number" id="n-g1s" class="ninp" min="0" max="100" step="5" placeholder="0"></div></div>
+      <p style="font-size:11px;color:var(--tx3);margin-top:2px">Cíl 2 dostane zbývajících <span id="g2rem">100</span> %.</p>
+    </div>
+    <div class="card">
+      <div class="ctitle">📈 Cíl 2 — 30 let <span class="badge bg2">Kola 1–30</span></div>
+      <p style="font-size:12px;color:var(--tx2);margin-bottom:8px">Pojmenujte svůj 30letý sen:</p>
+      <input type="text" id="g2name" class="tinp" placeholder="Např. Finanční nezávislost…" style="margin-bottom:10px">
+      <div class="frow"><label>Cílová částka (Kč)</label>
+        <div class="frow-in"><input type="range" id="s-g2t" min="0" max="10000000" step="50000" value="0"><input type="number" id="n-g2t" class="ninp" min="0" step="50000" placeholder="0"></div></div>
+    </div>
+  </div>
+
+  <div class="g2">
+    <div class="card">
+      <div class="ctitle">🛡 Alokace — Cíl 1</div>
+      <div id="a1rows"></div>
+      <div class="atotal"><div class="abar"><div class="afill" id="a1fill" style="width:0%"></div></div><span id="a1tot" style="font-size:12px;font-family:monospace;color:var(--tx2)">0 %</span></div>
+      <div class="warn" id="w1">⚠ Součet musí být přesně 100 %</div>
+    </div>
+    <div class="card">
+      <div class="ctitle">🚀 Alokace — Cíl 2</div>
+      <div id="a2rows"></div>
+      <div class="atotal"><div class="abar"><div class="afill" id="a2fill" style="width:0%"></div></div><span id="a2tot" style="font-size:12px;font-family:monospace;color:var(--tx2)">0 %</span></div>
+      <div class="warn" id="w2">⚠ Součet musí být přesně 100 %</div>
+    </div>
+  </div>
+
+  <div class="brow">
+    <button class="btn btnp" onclick="startGame()" style="flex:1;max-width:320px">▶ Spustit Invest Gym 30 let</button>
+  </div>
+</div>
+
+<!-- ══════════ HRA ══════════ -->
+<div id="game-panel" class="hidden">
+  <div class="tl-wrap">
+    <div class="tl-top"><span class="tl-lbl">Rok</span><div class="tl-segs" id="tlsegs"></div></div>
+    <div class="tl-legend">
+      <div class="tl-leg-item"><div class="tl-dot" style="background:var(--green)"></div><span>Cíl 1 (1–10)</span></div>
+      <div class="tl-leg-item"><div class="tl-dot" style="background:var(--blue)"></div><span>Cíl 2 (11–30)</span></div>
+      <div class="tl-leg-item"><div class="tl-dot" style="background:var(--red)"></div><span>Krize</span></div>
+    </div>
+  </div>
+
+  <div class="round-card" id="round-card"></div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="showTab('ov')">Přehled</button>
+    <button class="tab" onclick="showTab('po')">Portfolio</button>
+    <button class="tab" onclick="showTab('ch')">Grafy</button>
+    <button class="tab" onclick="showTab('hi')">Historie</button>
+  </div>
+
+  <div id="tab-ov">
+    <div class="g5" id="statcards" style="margin-bottom:.875rem"></div>
+    <div class="g2" style="margin-bottom:.875rem">
+      <div class="metric"><div class="mlabel">Investováno celkem</div><div class="mval" id="s-inv">—</div></div>
+      <div class="metric"><div class="mlabel">Hodnota investic</div><div class="mval bl" id="s-val">—</div></div>
+    </div>
+    <div class="goalg" id="goalcards"></div>
+    <div class="brow">
+      <button class="btn btnp" id="adv-btn" onclick="openRealloc()">▶ Nastavit alokaci a spustit rok</button>
+      <button class="btn" onclick="resetGame()">↩ Reset</button>
+    </div>
+  </div>
+
+  <div id="tab-po" class="hidden">
+    <div class="g2"><div class="card"><div class="ctitle" id="port1-title">Cíl 1</div><div id="pt1"></div></div>
+    <div class="card"><div class="ctitle">Cíl 2</div><div id="pt2"></div></div></div>
+    <div class="g2">
+      <div class="card"><div class="ctitle">Cíl 1 — rozložení</div><div class="cwrap-sm"><canvas id="pie1"></canvas></div></div>
+      <div class="card"><div class="ctitle">Cíl 2 — rozložení</div><div class="cwrap-sm"><canvas id="pie2"></canvas></div></div>
+    </div>
+  </div>
+
+  <div id="tab-ch" class="hidden">
+    <div class="card" style="margin-bottom:.875rem">
+      <div class="ctitle">Vývoj Cíle 1 (roky 1–10)</div>
+      <div class="cwrap"><canvas id="cg1"></canvas></div>
+      <div class="cleg"><span><span class="ldot" style="background:#10b981"></span>Hodnota</span><span><span class="ldot" style="background:rgba(255,255,255,.2)"></span>Cíl</span></div>
+    </div>
+    <div class="card" style="margin-bottom:.875rem">
+      <div class="ctitle">Vývoj Cíle 2 (30 let)</div>
+      <div class="cwrap"><canvas id="cg2"></canvas></div>
+      <div class="cleg"><span><span class="ldot" style="background:#3b82f6"></span>Nominální</span><span><span class="ldot" style="background:#f59e0b"></span>Reálná</span><span><span class="ldot" style="background:#e879f9"></span>Investováno</span><span><span class="ldot" style="background:rgba(16,185,129,.4)"></span>Cíl</span></div>
+    </div>
+    <div class="card">
+      <div class="ctitle">Roční výnosy aktiv — posledních 5 let (%)</div>
+      <div class="cwrap"><canvas id="cret"></canvas></div>
+    </div>
+  </div>
+
+  <div id="tab-hi" class="hidden">
+    <div class="card"><div class="ctitle">Kompletní historie — 30 let</div><div class="tscroll" id="histtbl"></div></div>
+  </div>
+</div>
+
+<!-- ══════════ VÝSLEDKY ══════════ -->
+<div id="results-panel" class="hidden">
+  <div class="card" style="border-color:rgba(212,168,83,.3);margin-bottom:.875rem">
+    <div style="display:flex;align-items:center;gap:12px">
+      <div class="logo-mark" style="font-size:22px">Invest<span style="color:var(--amber)">Gym</span></div>
+      <div><div style="font-size:15px;font-weight:700">30 let dokončeno</div><div style="font-size:12px;color:var(--tx2)">Reálná data 1996–2025</div></div>
+    </div>
+  </div>
+  <div class="g5" id="fstats" style="margin-bottom:.875rem"></div>
+  <div class="g2" style="margin-bottom:.875rem">
+    <div class="metric"><div class="mlabel">Investováno celkem</div><div class="mval" id="f-inv">—</div></div>
+    <div class="metric"><div class="mlabel">Hodnota investic</div><div class="mval bl" id="f-val">—</div></div>
+  </div>
+  <div class="card" style="margin-bottom:.875rem">
+    <div class="ctitle">Finální vývoj portfolia — 30 let</div>
+    <div class="cwrap" style="height:300px"><canvas id="fchart"></canvas></div>
+    <div class="cleg" style="margin-top:7px">
+      <span><span class="ldot" style="background:#3b82f6"></span>Nominální hodnota</span>
+      <span><span class="ldot" style="background:#f59e0b"></span>Reálná hodnota</span>
+      <span><span class="ldot" style="background:#e879f9"></span>Celkem investováno</span>
+      <span><span class="ldot" style="background:rgba(16,185,129,.5)"></span>Cíl</span>
+    </div>
+  </div>
+  <div class="g2" style="margin-bottom:.875rem">
+    <div class="card"><div class="ctitle">Klíčové ukazatele</div><div id="fmetrics"></div></div>
+    <div class="card"><div class="ctitle">Splnění cílů</div><div id="fgoals"></div><div class="sep"></div><p style="font-size:12px;color:var(--tx2);line-height:1.7" id="flesson"></p></div>
+  </div>
+
+  <!-- ODHALENÍ — historická mapa let -->
+  <div class="card" style="margin-bottom:.875rem;border-color:rgba(212,168,83,.25)">
+    <div class="ctitle">🗺 Odhalení — která kola odpovídala reálným letům?</div>
+    <p style="font-size:12px;color:var(--tx2);margin-bottom:1rem;line-height:1.6">Simulace probíhala na reálných datech let 1996–2025. Zde je kompletní mapa kol a historických etap trhů.</p>
+    <div id="reveal-table"></div>
+  </div>
+
+  <!-- EXPORT -->
+  <div class="card" style="border-color:rgba(212,168,83,.2)">
+    <div class="ctitle">📤 Uložit výsledky</div>
+    <div style="font-size:14px;color:var(--tx2);margin-bottom:12px">Účastník: <strong id="display-name" style="color:var(--tx)">—</strong></div>
+    <div style="margin-bottom:12px">
+      <button class="btn btnp" onclick="sendToSheets()" id="btn-sheets" style="width:100%"><span>📊</span> Odeslat do Google Tabulky</button>
+      <div id="sheets-status" style="display:none"></div>
+    </div>
+    <button class="btn" onclick="downloadTXT()" style="width:100%"><span>💾</span> Stáhnout výsledky jako TXT</button>
+  </div>
+
+  <div class="brow"><button class="btn btnp" onclick="resetGame()" style="flex:1;max-width:240px">↩ Hrát znovu</button></div>
+</div>
+
+</div>
+
+<!-- ══════════ VÝSLEDKY ROKU (zobrazí se po každém kole) ══════════ -->
+<div class="rov" id="yrov" style="z-index:85">
+  <div class="rmod" style="max-width:640px">
+    <div class="drag-handle"></div>
+    <div id="yr-head" style="margin-bottom:1rem"></div>
+
+    <!-- Asset returns grid -->
+    <div style="margin-bottom:1rem">
+      <div class="ctitle" style="margin-bottom:.6rem">📊 Výnosy aktiv v tomto roce</div>
+      <div id="yr-assets"></div>
+    </div>
+
+    <!-- Portfolio summary -->
+    <div class="g2" style="margin-bottom:1rem" id="yr-portfolio"></div>
+
+    <!-- Note if crisis year -->
+    <div id="yr-note" style="display:none;background:rgba(239,68,68,.1);border:.5px solid rgba(239,68,68,.3);border-radius:var(--rs);padding:9px 12px;font-size:12px;color:#fca5a5;margin-bottom:1rem"></div>
+
+    <div class="brow" style="margin-top:.5rem">
+      <button class="btn btnp" onclick="closeYearResult()" style="flex:1">▶ Nastavit alokaci pro příští rok</button>
+    </div>
+  </div>
+</div>
+
+<!-- ══════════ REALLOC MODAL ══════════ -->
+<div class="rov" id="rov">
+  <div class="rmod">
+    <div class="drag-handle"></div>
+    <div class="rmod-title" id="rmod-title">Nastavení před rokem X</div>
+    <div class="rmod-sub" id="rmod-sub"></div>
+
+    <div class="frow" style="margin-bottom:6px">
+      <label>Měsíční úložka (Kč)</label>
+      <div class="frow-in"><input type="range" id="rs-mon" min="0" max="50000" step="100" value="0"><input type="number" id="rn-mon" class="ninp" min="0" step="100" placeholder="0"></div>
+    </div>
+    <div class="mbanner" style="margin-bottom:.875rem"><span>Roční příspěvek:</span><strong id="rannual">0 Kč</strong></div>
+
+    <div class="split-block" id="split-block">
+      <div class="split-title">📊 Rozdělení úspor mezi cíle (jen roky 1–10)</div>
+      <div class="frow" style="margin-bottom:6px">
+        <label>Podíl pro Cíl 1 (%)</label>
+        <div class="frow-in"><input type="range" id="rs-spl" min="0" max="100" step="5" value="0"><input type="number" id="rn-spl" class="ninp" min="0" max="100" step="5" placeholder="0"></div>
+      </div>
+      <div class="split-bar"><div class="split-c1" id="sv1" style="width:0%"></div><div class="split-c2" id="sv2" style="width:100%"></div></div>
+      <div style="display:flex;justify-content:space-between;font-size:11px;font-family:monospace">
+        <span style="color:var(--green)">🎯 C1: <strong id="sl1">0 %</strong></span>
+        <span style="color:#93c5fd">📈 C2: <strong id="sl2">100 %</strong></span>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:10px">
+        <div><div style="font-size:11px;color:var(--green);font-weight:600;margin-bottom:4px">🎯 Cíl 1 — Kč</div>
+          <input type="number" id="rn-c1kc" class="ninp" min="0" step="100" placeholder="0" style="width:100%">
+          <div style="font-size:10px;color:var(--tx3);margin-top:3px">= <span id="sl1b">0 %</span></div></div>
+        <div><div style="font-size:11px;color:#93c5fd;font-weight:600;margin-bottom:4px">📈 Cíl 2 — Kč</div>
+          <input type="number" id="rn-c2kc" class="ninp" min="0" step="100" placeholder="0" style="width:100%">
+          <div style="font-size:10px;color:var(--tx3);margin-top:3px">= <span id="sl2b">100 %</span></div></div>
+      </div>
+    </div>
+
+    <div class="g2">
+      <div id="ra1-wrap">
+        <div class="ctitle" style="margin-bottom:.5rem">🛡 Cíl 1</div>
+        <div id="ra1rows"></div>
+        <div class="atotal"><div class="abar"><div class="afill" id="ra1fill" style="width:0%"></div></div><span id="ra1tot" style="font-size:12px;font-family:monospace;color:var(--tx2)">0 %</span></div>
+        <div class="warn" id="rw1">⚠ Musí být 100 %</div>
+      </div>
+      <div>
+        <div class="ctitle" style="margin-bottom:.5rem">🚀 Cíl 2</div>
+        <div id="ra2rows"></div>
+        <div class="atotal"><div class="abar"><div class="afill" id="ra2fill" style="width:0%"></div></div><span id="ra2tot" style="font-size:12px;font-family:monospace;color:var(--tx2)">0 %</span></div>
+        <div class="warn" id="rw2">⚠ Musí být 100 %</div>
+      </div>
+    </div>
+    <div class="brow" style="margin-top:1.2rem">
+      <button class="btn btnp" onclick="confirmRealloc()" style="flex:1">✓ Potvrdit a spustit rok</button>
+    </div>
+  </div>
+</div>
+
+<script>
+// ╔══════════════════════════════════════════════════════════════════╗
+// ║         INVEST GYM 30 LET — KONFIGURACE                        ║
+// ╚══════════════════════════════════════════════════════════════════╝
+
+const APPS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzlma3D_D16Fl-9Mr0DLGGiu_RjkqKsB2HcLTM2vQFZswvXHwEz59ku1O5U4fzMfEBB/exec';
+
+// ══════════════════════════════════════════════════════════════════
+// REÁLNÁ HISTORICKÁ DATA 1996–2025
+// Pole l: zobrazovaný název (Rok 1–30) — rok zůstává skrytý až do konce!
+// Pole yr: skutečný rok — odhalí se ve výsledcích
+// Pole era: historická etapa pro výsledkové odhalení
+// Pole crisisName: název krize (jen pro krizové roky)
+// ══════════════════════════════════════════════════════════════════
+const ROUNDS = [
+  { l:'Rok 1',  yr:1996, era:'Technologický boom 90. let',      r:{ sp500: 23.0, etf_world: 14.0, bonds:  3.6, reit: 37.1, commodities: 23.2, savings: 3.2, cash:0 }},
+  { l:'Rok 2',  yr:1997, era:'Technologický boom 90. let',      r:{ sp500: 33.4, etf_world: 16.2, bonds:  9.7, reit: 19.7, commodities: -3.4, savings: 3.5, cash:0 }},
+  { l:'Rok 3',  yr:1998, era:'Technologický boom 90. let',      r:{ sp500: 28.6, etf_world: 24.8, bonds:  8.7, reit:-17.0, commodities:-27.0, savings: 4.0, cash:0 }},
+  { l:'Rok 4',  yr:1999, era:'Dot-com euforie — vrchol bubliny',r:{ sp500: 21.0, etf_world: 25.3, bonds: -0.8, reit: -2.6, commodities: 24.3, savings: 3.8, cash:0 }},
+  { l:'Rok 5',  yr:2000, era:'Dot-com krize', crisis:true, crisisName:'Prasknutí dot-com bubliny', r:{ sp500: -9.1, etf_world:-12.9, bonds: 11.6, reit: 31.0, commodities: 31.8, savings: 4.2, cash:0 }},
+  { l:'Rok 6',  yr:2001, era:'Dot-com krize', crisis:true, crisisName:'Recese a teroristické útoky 11. září', r:{ sp500:-11.9, etf_world:-16.5, bonds:  8.4, reit: 12.3, commodities:-19.5, savings: 3.1, cash:0 }},
+  { l:'Rok 7',  yr:2002, era:'Dot-com krize', crisis:true, crisisName:'Dno dot-com krachu', r:{ sp500:-22.1, etf_world:-19.5, bonds: 10.3, reit:  3.6, commodities: 25.9, savings: 2.2, cash:0 }},
+  { l:'Rok 8',  yr:2003, era:'Oživení po dot-com krizi',        r:{ sp500: 28.7, etf_world: 33.8, bonds:  4.1, reit: 36.2, commodities: 23.9, savings: 1.5, cash:0 }},
+  { l:'Rok 9',  yr:2004, era:'Oživení po dot-com krizi',        r:{ sp500: 10.9, etf_world: 15.3, bonds:  4.3, reit: 33.2, commodities:  9.1, savings: 2.0, cash:0 }},
+  { l:'Rok 10', yr:2005, era:'Předkrizový boom nemovitostí',     r:{ sp500:  4.9, etf_world: 10.0, bonds:  2.4, reit: 13.8, commodities: 21.4, savings: 2.3, cash:0 }},
+  { l:'Rok 11', yr:2006, era:'Předkrizový boom nemovitostí',     r:{ sp500: 15.8, etf_world: 20.7, bonds:  4.3, reit: 36.0, commodities:  2.1, savings: 2.8, cash:0 }},
+  { l:'Rok 12', yr:2007, era:'Předkrizový boom nemovitostí',     r:{ sp500:  5.5, etf_world:  9.6, bonds:  7.0, reit:-17.6, commodities: 16.2, savings: 3.0, cash:0 }},
+  { l:'Rok 13', yr:2008, era:'Globální finanční krize', crisis:true, crisisName:'Globální finanční krize — krach Lehman Brothers', r:{ sp500:-37.0, etf_world:-40.3, bonds:  5.2, reit:-39.2, commodities:-35.6, savings: 2.5, cash:0 }},
+  { l:'Rok 14', yr:2009, era:'Oživení po finanční krizi',        r:{ sp500: 26.5, etf_world: 30.8, bonds:  5.9, reit: 28.5, commodities: 18.9, savings: 1.8, cash:0 }},
+  { l:'Rok 15', yr:2010, era:'Oživení po finanční krizi',        r:{ sp500: 15.1, etf_world: 12.3, bonds:  6.5, reit: 28.1, commodities: 16.8, savings: 1.5, cash:0 }},
+  { l:'Rok 16', yr:2011, era:'Evropská dluhová krize',  crisis:true, crisisName:'Evropská dluhová krize — Řecko, Itálie, Španělsko', r:{ sp500:  2.1, etf_world: -5.5, bonds:  7.8, reit:  9.4, commodities:-13.3, savings: 1.8, cash:0 }},
+  { l:'Rok 17', yr:2012, era:'Stabilizace a nový růst',          r:{ sp500: 16.0, etf_world: 16.5, bonds:  4.2, reit: 17.1, commodities: -1.1, savings: 1.5, cash:0 }},
+  { l:'Rok 18', yr:2013, era:'Stabilizace a nový růst',          r:{ sp500: 32.4, etf_world: 27.4, bonds: -2.0, reit:  1.2, commodities: -9.5, savings: 1.2, cash:0 }},
+  { l:'Rok 19', yr:2014, era:'Stabilizace a nový růst',          r:{ sp500: 13.7, etf_world:  5.5, bonds:  6.0, reit: 32.0, commodities:-17.0, savings: 1.0, cash:0 }},
+  { l:'Rok 20', yr:2015, era:'Komoditní krize a Čína',           r:{ sp500:  1.4, etf_world: -0.3, bonds:  0.5, reit:  4.5, commodities:-24.7, savings: 0.8, cash:0 }},
+  { l:'Rok 21', yr:2016, era:'Nový technologický boom',          r:{ sp500: 12.0, etf_world:  8.2, bonds:  2.6, reit:  6.7, commodities: 11.8, savings: 0.7, cash:0 }},
+  { l:'Rok 22', yr:2017, era:'Nový technologický boom',          r:{ sp500: 21.8, etf_world: 23.1, bonds:  3.5, reit:  3.8, commodities:  1.7, savings: 0.6, cash:0 }},
+  { l:'Rok 23', yr:2018, era:'Obchodní války USA–Čína',          r:{ sp500: -4.4, etf_world: -8.2, bonds:  0.0, reit: -4.2, commodities:-11.2, savings: 0.8, cash:0 }},
+  { l:'Rok 24', yr:2019, era:'Nový technologický boom',          r:{ sp500: 31.5, etf_world: 28.4, bonds:  8.7, reit: 23.1, commodities:  7.7, savings: 1.2, cash:0 }},
+  { l:'Rok 25', yr:2020, era:'Pandemická krize COVID-19', crisis:true, crisisName:'Pandemická krize COVID-19 — lockdowny, kolaps cestovního ruchu', r:{ sp500: 18.4, etf_world: 16.5, bonds:  7.5, reit:-11.2, commodities:-11.0, savings: 0.5, cash:0 }},
+  { l:'Rok 26', yr:2021, era:'Post-COVID boom',                  r:{ sp500: 28.7, etf_world: 22.4, bonds: -1.5, reit: 45.9, commodities: 27.1, savings: 0.4, cash:0 }},
+  { l:'Rok 27', yr:2022, era:'Inflační krize', crisis:true, crisisName:'Inflační krize — nejhorší propad dluhopisů za 40 let', r:{ sp500:-18.1, etf_world:-17.7, bonds:-13.0, reit:-26.0, commodities: 16.1, savings: 3.5, cash:0 }},
+  { l:'Rok 28', yr:2023, era:'Oživení po inflaci',               r:{ sp500: 26.3, etf_world: 23.8, bonds:  5.5, reit: 14.0, commodities: -7.9, savings: 5.0, cash:0 }},
+  { l:'Rok 29', yr:2024, era:'Nová AI éra',                      r:{ sp500: 25.0, etf_world: 18.7, bonds:  1.7, reit:  8.0, commodities:  5.4, savings: 4.5, cash:0 }},
+  { l:'Rok 30', yr:2025, era:'Nová AI éra',                      r:{ sp500:  8.7, etf_world: 21.6, bonds:  7.1, reit:  4.4, commodities: 14.2, savings: 3.8, cash:0 }},
+];
+
+// ══════════════════════════════════════════════════════════════════
+// ASSETS
+// ══════════════════════════════════════════════════════════════════
+const ASSETS=[
+  {id:'sp500',       lbl:'S&P 500 ETF',        color:'#10b981',sh:'S&P 500'},
+  {id:'etf_world',   lbl:'World ETF (MSCI)',   color:'#3b82f6',sh:'World ETF'},
+  {id:'reit',        lbl:'REIT ETF',            color:'#e879f9',sh:'REIT'},
+  {id:'commodities', lbl:'Komodity ETF (BCOM)', color:'#14b8a6',sh:'Komodity'},
+  {id:'bonds',       lbl:'Dluhopisy ETF (AGG)', color:'#8b5cf6',sh:'Dluhopisy'},
+  {id:'savings',     lbl:'Spořicí účet',        color:'#f59e0b',sh:'Spořicí'},
+  {id:'cash',        lbl:'Hotovost',            color:'#6b7280',sh:'Hotovost'},
+];
+
+// ══════════════════════════════════════════════════════════════════
+// STATE
+// ══════════════════════════════════════════════════════════════════
+let G={};
+let alloc1=mkA0(), alloc2=mkA0(), ra1=mkA0(), ra2=mkA0();
+let CH={};
+function mkA0(){ return ASSETS.reduce((o,a)=>({...o,[a.id]:0}),{}); }
+
+// ══════════════════════════════════════════════════════════════════
+// FORMAT
+// ══════════════════════════════════════════════════════════════════
+function fkc(v){ return Math.round(v).toLocaleString('cs-CZ')+' Kč'; }
+function fn(v){ return Math.round(v).toLocaleString('cs-CZ'); }
+function fp(v){ return (v>=0?'+':'')+v.toFixed(1)+' %'; }
+function fpp(v){ return (v!==null&&isFinite(v)?v.toFixed(2):'—')+' %'; }
+function clamp(v,lo,hi){ return Math.min(Math.max(v,lo),hi); }
+function ta(a){ return ASSETS.reduce((s,x)=>s+(a[x.id]||0),0); }
+
+// ══════════════════════════════════════════════════════════════════
+// XIRR
+// ══════════════════════════════════════════════════════════════════
+function calcXIRR(flows){
+  if(!flows||flows.length<2) return null;
+  if(!flows.some(f=>f.v<0)||!flows.some(f=>f.v>0)) return null;
+  const MAX=400,TOL=1e-9;
+  for(const seed of [0.1,0.5,-0.1,2.0,-0.5]){
+    let r=seed,ok=false;
+    for(let i=0;i<MAX;i++){
+      let f=0,df=0;
+      for(const fl of flows){
+        if(fl.t===0){f+=fl.v;continue;}
+        const b=1+r; if(b<=0) break;
+        const d=Math.pow(b,fl.t);
+        f+=fl.v/d; df+=(-fl.t*fl.v)/(b*d);
+      }
+      if(!isFinite(f)||Math.abs(df)<1e-14) break;
+      const nr=r-f/df;
+      if(!isFinite(nr)||nr<=-1) break;
+      if(Math.abs(nr-r)<TOL){r=nr;ok=true;break;}
+      r=nr;
+    }
+    if(ok&&isFinite(r)&&r>-1) return r*100;
+  }
+  return null;
+}
+function getXIRR1(){
+  const fl=[...G.xf1]; if(!G.g1done) fl.push({t:G.round,v:G.g1v}); return calcXIRR(fl);
+}
+function getXIRR2(){
+  return calcXIRR([...G.xf2,{t:G.round,v:G.g2v}]);
+}
+
+// ══════════════════════════════════════════════════════════════════
+// SLIDER SYNC
+// ══════════════════════════════════════════════════════════════════
+function sync(sid,nid,cb){
+  const s=document.getElementById(sid),n=document.getElementById(nid);
+  if(!s||!n) return;
+  const up=src=>{
+    if(src==='s') n.value=parseFloat(s.value)||0;
+    else s.value=clamp(parseFloat(n.value)||0,parseFloat(s.min)||0,parseFloat(s.max)||9999999);
+    if(cb) cb();
+  };
+  s.addEventListener('input',()=>up('s'));
+  n.addEventListener('input',()=>up('n'));
+}
+
+// ══════════════════════════════════════════════════════════════════
+// ALLOC ROWS
+// ══════════════════════════════════════════════════════════════════
+function buildAlloc(cid,obj,fillId,totId,warnId){
+  const el=document.getElementById(cid); if(!el) return;
+  el.innerHTML='';
+  ASSETS.forEach(a=>{
+    const row=document.createElement('div'); row.className='arow';
+    const v=obj[a.id]||0;
+    row.innerHTML=`<span class="adot" style="background:${a.color}"></span>
+      <span class="alabel" title="${a.lbl}">${a.lbl}</span>
+      <input type="range" min="0" max="100" step="5" value="${v}" id="as-${cid}-${a.id}">
+      <input type="number" min="0" max="100" step="5" value="${v}" class="anum" id="an-${cid}-${a.id}">
+      <span class="apct" id="ap-${cid}-${a.id}">${v} %</span>`;
+    el.appendChild(row);
+    const sl=document.getElementById(`as-${cid}-${a.id}`);
+    const nu=document.getElementById(`an-${cid}-${a.id}`);
+    const pg=document.getElementById(`ap-${cid}-${a.id}`);
+    const upd=src=>{
+      const val=src==='sl'?parseInt(sl.value):clamp(parseInt(nu.value)||0,0,100);
+      obj[a.id]=val; sl.value=val; nu.value=val; pg.textContent=val+' %';
+      refreshTot(obj,fillId,totId,warnId);
+    };
+    sl.addEventListener('input',()=>upd('sl'));
+    nu.addEventListener('input',()=>upd('nu'));
+  });
+  refreshTot(obj,fillId,totId,warnId);
+}
+function refreshTot(obj,fillId,totId,warnId){
+  const t=ta(obj);
+  const f=document.getElementById(fillId),tx=document.getElementById(totId),w=document.getElementById(warnId);
+  if(f){f.style.width=Math.min(t,100)+'%';f.style.background=t===100?'#10b981':t>100?'#ef4444':'#f59e0b';}
+  if(tx){tx.textContent=t+' %';tx.style.color=t===100?'#10b981':'#f59e0b';}
+  if(w) w.style.display=t!==100?'block':'none';
+  return t===100;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// START
+// ══════════════════════════════════════════════════════════════════
+function startGame(){
+  if(ta(alloc1)!==100){document.getElementById('w1').style.display='block';return;}
+  if(ta(alloc2)!==100){document.getElementById('w2').style.display='block';return;}
+  const cap=parseFloat(document.getElementById('n-cap').value)||0;
+  const inf=parseFloat(document.getElementById('n-inf').value)||0;
+  const mon=parseFloat(document.getElementById('n-mon').value)||0;
+  const g1t=parseFloat(document.getElementById('n-g1t').value)||0;
+  const g2t=parseFloat(document.getElementById('n-g2t').value)||0;
+  const g1s=(parseFloat(document.getElementById('n-g1s').value)||0)/100;
+  const g1name=document.getElementById('g1name').value.trim()||'Cíl 1';
+  const g2name=document.getElementById('g2name').value.trim()||'Cíl 2';
+  const pName=document.getElementById('participant-name').value.trim()||'Neznámý';
+
+  G={round:0,cap,inf,mon,contrib:mon*12,g1t,g2t,g1s,g1name,g2name,participantName:pName,
+    a1:{...alloc1},a2:{...alloc2},
+    g1v:cap*g1s, g2v:cap*(1-g1s),
+    g1done:false,g1fv:0,cumInfl:1,totalInv:cap,savSplit:g1s,
+    xf1:cap*g1s>0?[{t:0,v:-(cap*g1s)}]:[],
+    xf2:cap*(1-g1s)>0?[{t:0,v:-(cap*(1-g1s))}]:[],
+    history:[]};
+
+  document.getElementById('setup-panel').classList.add('hidden');
+  document.getElementById('game-panel').classList.remove('hidden');
+  renderRound();
+}
+
+// ══════════════════════════════════════════════════════════════════
+// REALLOC MODAL
+// ══════════════════════════════════════════════════════════════════
+function openRealloc(){
+  const rn=G.round+1, isEarly=G.round<10;
+  const rd=ROUNDS[G.round];
+  document.getElementById('rmod-title').textContent=`Nastavení před rokem ${rn}`;
+  document.getElementById('rmod-sub').textContent=isEarly
+    ?`Rok ${rn} z 30 — Upravte alokaci, měsíční úložku a rozdělení úspor. C1 končí po roce 10.`
+    :`Rok ${rn} z 30 — Cíl 1 ukončen. Veškeré úspory nyní plynou na Cíl 2. Upravte alokaci dle situace.`;
+
+  ASSETS.forEach(a=>{ra1[a.id]=G.a1[a.id]||0;ra2[a.id]=G.a2[a.id]||0;});
+
+  const rm=document.getElementById('rs-mon'),rn2=document.getElementById('rn-mon');
+  rm.value=G.mon||0; rn2.value=G.mon||'';
+  document.getElementById('rannual').textContent=fkc((G.mon||0)*12);
+
+  const sb=document.getElementById('split-block'),ra1w=document.getElementById('ra1-wrap');
+  if(isEarly){
+    sb.style.display='block'; ra1w.style.opacity='1'; ra1w.style.pointerEvents='auto';
+    const sp=Math.round(G.savSplit*100);
+    document.getElementById('rs-spl').value=sp; document.getElementById('rn-spl').value=sp;
+    updateSplitFromPct(sp,(G.mon||0)*12);
+    wireSplitInputs((G.mon||0)*12);
+  } else {
+    sb.style.display='none'; ra1w.style.opacity='0.35'; ra1w.style.pointerEvents='none';
+  }
+
+  buildAlloc('ra1rows',ra1,'ra1fill','ra1tot','rw1');
+  buildAlloc('ra2rows',ra2,'ra2fill','ra2tot','rw2');
+
+  const getAnn=()=>(parseFloat(document.getElementById('rn-mon').value)||0)*12;
+  document.getElementById('rs-mon').oninput=()=>{ document.getElementById('rn-mon').value=document.getElementById('rs-mon').value; document.getElementById('rannual').textContent=fkc(getAnn()); if(isEarly) updateSplitFromPct(parseInt(document.getElementById('rs-spl').value)||0,getAnn()); };
+  document.getElementById('rn-mon').oninput=()=>{ document.getElementById('rs-mon').value=clamp(parseFloat(document.getElementById('rn-mon').value)||0,0,50000); document.getElementById('rannual').textContent=fkc(getAnn()); if(isEarly) updateSplitFromPct(parseInt(document.getElementById('rs-spl').value)||0,getAnn()); };
+
+  document.getElementById('rov').classList.add('open');
+}
+
+function updateSplitFromPct(pct,ann){
+  const c1=Math.round(ann*pct/100),c2=Math.round(ann*(100-pct)/100);
+  const sv1=document.getElementById('sv1'),sv2=document.getElementById('sv2');
+  if(sv1){sv1.style.width=pct+'%';sv2.style.width=(100-pct)+'%';}
+  const sl1=document.getElementById('sl1'),sl2=document.getElementById('sl2');
+  const sl1b=document.getElementById('sl1b'),sl2b=document.getElementById('sl2b');
+  if(sl1){sl1.textContent=pct+' %';sl2.textContent=(100-pct)+' %';}
+  if(sl1b){sl1b.textContent=pct+' %';sl2b.textContent=(100-pct)+' %';}
+  const c1el=document.getElementById('rn-c1kc'),c2el=document.getElementById('rn-c2kc');
+  if(c1el) c1el.value=c1||''; if(c2el) c2el.value=c2||'';
+}
+
+function wireSplitInputs(ann){
+  const getAnn=()=>(parseFloat(document.getElementById('rn-mon').value)||0)*12;
+  const rsSpl=document.getElementById('rs-spl'),rnSpl=document.getElementById('rn-spl');
+  rsSpl.oninput=()=>{rnSpl.value=parseInt(rsSpl.value)||0; updateSplitFromPct(parseInt(rsSpl.value)||0,getAnn());};
+  rnSpl.oninput=()=>{rsSpl.value=clamp(parseInt(rnSpl.value)||0,0,100); updateSplitFromPct(parseInt(rnSpl.value)||0,getAnn());};
+  const c1el=document.getElementById('rn-c1kc');
+  c1el.oninput=()=>{ const a=getAnn(),c1=clamp(parseFloat(c1el.value)||0,0,a),c2=Math.max(0,a-c1); document.getElementById('rn-c2kc').value=c2||''; const p=a>0?Math.round(c1/a*100):0; rsSpl.value=p; rnSpl.value=p; updateSplitFromPct(p,a); };
+  const c2el=document.getElementById('rn-c2kc');
+  c2el.oninput=()=>{ const a=getAnn(),c2=clamp(parseFloat(c2el.value)||0,0,a),c1=Math.max(0,a-c2); document.getElementById('rn-c1kc').value=c1||''; const p=a>0?Math.round(c1/a*100):0; rsSpl.value=p; rnSpl.value=p; updateSplitFromPct(p,a); };
+}
+
+function confirmRealloc(){
+  const isEarly=G.round<10;
+  if(isEarly&&ta(ra1)!==100){document.getElementById('rw1').style.display='block';return;}
+  if(ta(ra2)!==100){document.getElementById('rw2').style.display='block';return;}
+  if(isEarly) G.a1={...ra1};
+  G.a2={...ra2};
+  const nm=parseFloat(document.getElementById('rn-mon').value)||0;
+  G.mon=nm; G.contrib=nm*12;
+  if(isEarly) G.savSplit=clamp(parseInt(document.getElementById('rs-spl').value)||0,0,100)/100;
+  document.getElementById('rov').classList.remove('open');
+  advanceRound();
+}
+
+// ══════════════════════════════════════════════════════════════════
+// ADVANCE ROUND
+// Logika: 1) úroč existující kapitál celý rok
+//          2) přidej příspěvek na KONCI roku (neúročí se v tomto roce)
+// ══════════════════════════════════════════════════════════════════
+function advanceRound(){
+  if(G.round>=30){showResults();return;}
+  const rd=ROUNDS[G.round];
+  G.cumInfl*=(1+G.inf/100);
+  const isEarly=G.round<10;
+  const c1c=isEarly?G.contrib*G.savSplit:0;
+  const c2c=isEarly?G.contrib*(1-G.savSplit):G.contrib;
+
+  // Krok 1: úroč existující kapitál
+  let g1r=0,g1after=G.g1v;
+  if(!G.g1done){
+    g1r=ASSETS.reduce((s,a)=>s+(G.a1[a.id]||0)/100*(rd.r[a.id]||0),0);
+    g1after=G.g1v*(1+g1r/100);
+  }
+  const g2r=ASSETS.reduce((s,a)=>s+(G.a2[a.id]||0)/100*(rd.r[a.id]||0),0);
+  const g2after=G.g2v*(1+g2r/100);
+
+  // Krok 2: přidej příspěvek na konci roku
+  const g1new=g1after+c1c;
+  const g2new=g2after+c2c;
+
+  G.g1v=G.g1done?G.g1fv:g1new;
+  G.g2v=g2new;
+  G.totalInv+=G.contrib;
+  G.round++;
+
+  // XIRR flows — příspěvek na konci roku = t=G.round
+  const tEnd=G.round;
+  if(isEarly&&c1c>0) G.xf1.push({t:tEnd,v:-c1c});
+  if(c2c>0) G.xf2.push({t:tEnd,v:-c2c});
+
+  // Uzavření Cíle 1 po 10 letech
+  if(G.round===10&&!G.g1done){
+    G.g1done=true; G.g1fv=G.g1v;
+    G.xf1.push({t:10,v:G.g1fv});   // terminální hodnota C1
+    G.g2v+=G.g1v;                    // zůstatek C1 přeteče do C2
+    G.xf2.push({t:10,v:-G.g1fv});   // reinvestice jako odtok do C2
+  }
+
+  G.history.push({
+    rnd:G.round, lbl:rd.l, yr:rd.yr,
+    g1v:G.g1done&&G.round>=10?G.g1fv:G.g1v,
+    g2v:G.g2v, g1r, g2r,
+    ret:{...rd.r}, crisis:rd.crisis||false, crisisName:rd.crisisName||'',
+    realG2:G.g2v/G.cumInfl, totalInv:G.totalInv,
+  });
+
+  if(G.round>=30){showResults();return;}
+
+  // Po každém kole ukázat výsledky roku — PŘED otevřením reallocu
+  showYearResult(rd, g1r, g2r);
+}
+
+// ══════════════════════════════════════════════════════════════════
+// YEAR RESULT PANEL — zobrazí výnosy aktiv po každém kole
+// ══════════════════════════════════════════════════════════════════
+function showYearResult(rd, g1r, g2r){
+  const h=G.history[G.history.length-1];
+  const isCrisis=rd.crisis||false;
+
+  // Hlavička
+  const headEl=document.getElementById('yr-head');
+  headEl.innerHTML=`
+    <div style="font-size:17px;font-weight:700;color:var(--tx);margin-bottom:3px">
+      ${rd.l} — výsledky
+      ${isCrisis?'<span class="crisis-badge" style="font-size:12px;padding:3px 10px">⚠ KRIZOVÝ ROK</span>':''}
+    </div>
+    <div style="font-size:12px;color:var(--tx2)">Kolo ${G.round} z 30 dokončeno${G.g1done&&G.round===10?' — Cíl 1 právě ukončen!':''}</div>`;
+
+  // Asset returns
+  const maxAbs=Math.max(...ASSETS.map(a=>Math.abs(rd.r[a.id]||0)),1);
+  const assetsEl=document.getElementById('yr-assets');
+  assetsEl.innerHTML=ASSETS.map(a=>{
+    const rv=rd.r[a.id]||0;
+    const col=rv>5?'#10b981':rv>0?'#6ee7b7':rv>-5?'#f59e0b':'#ef4444';
+    const barW=(Math.abs(rv)/maxAbs*100).toFixed(1);
+    const barLeft=rv>=0?'left:0':'right:0;left:auto';
+    const barColor=rv>=0?'#10b981':'#ef4444';
+    return `<div class="ar-row">
+      <span class="ar-dot" style="background:${a.color}"></span>
+      <span class="ar-name">${a.lbl}</span>
+      <div class="ar-bar-wrap"><div class="ar-bar" style="width:${barW}%;background:${barColor};${barLeft}"></div></div>
+      <span class="ar-val" style="color:${col}">${rv>=0?'+':''}${rv.toFixed(1)} %<span class="ar-arrow">${rv>0?'▲':'▼'}</span></span>
+    </div>`;
+  }).join('');
+
+  // Portfolio summary
+  const g1p=G.g1t>0?(h.g1v/G.g1t*100).toFixed(0):0;
+  const g2p=G.g2t>0?(h.g2v/G.g2t*100).toFixed(0):0;
+  const portEl=document.getElementById('yr-portfolio');
+  portEl.innerHTML=`
+    <div class="metric">
+      <div class="mlabel">🎯 ${G.g1name}</div>
+      <div class="mval ${g1r>=0?'gr':'rd'}" style="font-size:16px">${fn(h.g1v)}</div>
+      <div style="font-size:11px;color:var(--tx3);margin-top:3px">Výnos: ${fp(g1r)} · ${g1p} % z cíle${G.g1done&&G.round===10?' — ✓ Ukončeno':''}</div>
+    </div>
+    <div class="metric">
+      <div class="mlabel">📈 ${G.g2name}</div>
+      <div class="mval ${g2r>=0?'gr':'rd'}" style="font-size:16px">${fn(h.g2v)}</div>
+      <div style="font-size:11px;color:var(--tx3);margin-top:3px">Výnos: ${fp(g2r)} · ${g2p} % z cíle</div>
+    </div>`;
+
+  // Crisis note — zobrazí název krize, ale NE historický rok
+  const noteEl=document.getElementById('yr-note');
+  if(isCrisis&&rd.crisisName){
+    noteEl.style.display='block';
+    noteEl.textContent=`⚠ ${rd.crisisName}`;
+  } else {
+    noteEl.style.display='none';
+  }
+
+  // Tlačítko — pokud je poslední kolo, text se mění
+  const btn=document.querySelector('#yrov .btnp');
+  if(btn){
+    if(G.round===30) btn.textContent='🏁 Zobrazit výsledky';
+    else btn.textContent='▶ Nastavit alokaci pro příští rok';
+  }
+
+  document.getElementById('yrov').classList.add('open');
+}
+
+function closeYearResult(){
+  document.getElementById('yrov').classList.remove('open');
+  if(G.round>=30){
+    showResults();
+    return;
+  }
+  renderRound();
+  // Po roce 30 by se neotvíral realloc
+  openRealloc();
+}
+
+// ══════════════════════════════════════════════════════════════════
+// RENDER ROUND
+// ══════════════════════════════════════════════════════════════════
+function renderRound(){
+  buildTL(); buildRoundCard();
+  renderStats(); renderGoals();
+  renderHistTable(); updateCharts();
+  document.getElementById('adv-btn').textContent=G.round===29?'🏁 Nastavit alokaci a dokončit':'▶ Nastavit alokaci a spustit rok';
+}
+
+function buildTL(){
+  const el=document.getElementById('tlsegs'); el.innerHTML='';
+  for(let i=0;i<30;i++){
+    const it=document.createElement('div'); it.className='tl-item';
+    const sg=document.createElement('div'); sg.className='tl-s';
+    const rd=ROUNDS[i];
+    if(i<G.round){
+      if(rd.crisis) sg.classList.add('crisis');
+      else if(i<10) sg.classList.add('g1d');
+      else sg.classList.add('done');
+    } else if(i===G.round){
+      sg.classList.add('active');
+    }
+    sg.title=`${rd.l}${rd.crisis?' — ⚠ Krizový rok':''}`;
+    const nm=document.createElement('span'); nm.className='tl-n';
+    // Zobraz čísla kol 1, 5, 10, 15, 20, 25, 30 — bez reálných let
+    nm.textContent=(i===0||((i+1)%5===0))?(i+1):'';
+    it.appendChild(sg); it.appendChild(nm); el.appendChild(it);
+  }
+}
+
+function buildRoundCard(){
+  const rd=ROUNDS[Math.min(G.round,29)];
+  const el=document.getElementById('round-card');
+  const crisis=rd.crisis?`<span class="crisis-badge">⚠ KRIZOVÝ ROK</span>`:'';
+  el.innerHTML=`<div class="round-title">${rd.l} — Kolo ${G.round+1} z 30 ${crisis}</div>
+    <div style="font-size:11px;color:var(--tx3);margin-top:4px">
+      ${G.round<10?'<span class="badge bg1" style="margin-right:5px">Cíl 1 aktivní</span>':''}
+      <span class="badge bgd">Cíl 2 ${G.round>=10?'aktivní':'připravuje se'}</span>
+    </div>`;
+}
+
+function renderStats(){
+  const tot=G.g1done?G.g2v:G.g1v+G.g2v;
+  const x1=getXIRR1(),x2=getXIRR2();
+  const rv=tot/G.cumInfl,il=tot-rv;
+  document.getElementById('statcards').innerHTML=`
+    <div class="metric"><div class="mlabel">Portfolio</div><div class="mval bl">${fn(tot)}</div></div>
+    <div class="metric"><div class="mlabel">XIRR C1</div><div class="mval ${x1!==null&&x1>=0?'gr':'rd'}">${fpp(x1)}</div></div>
+    <div class="metric"><div class="mlabel">XIRR C2</div><div class="mval ${x2!==null&&x2>=0?'gr':'rd'}">${fpp(x2)}</div></div>
+    <div class="metric"><div class="mlabel">Reálná hodnota</div><div class="mval am">${fn(rv)}</div></div>
+    <div class="metric"><div class="mlabel">Ztráta inflací</div><div class="mval rd">−${fn(il)}</div></div>`;
+  document.getElementById('s-inv').textContent=fkc(G.totalInv);
+  document.getElementById('s-val').textContent=fkc(tot);
+  document.getElementById('s-val').className='mval '+(tot>=G.totalInv?'bl':'rd');
+}
+
+function renderGoals(){
+  const g1p=G.g1t>0?G.g1v/G.g1t*100:0;
+  const g2p=G.g2t>0?G.g2v/G.g2t*100:0;
+  const c1=g1p>=100?'#10b981':g1p>=70?'#f59e0b':'#ef4444';
+  const c2=g2p>=100?'#10b981':g2p>=70?'#f59e0b':'#ef4444';
+  document.getElementById('goalcards').innerHTML=`
+    <div class="gcard">
+      <div class="gctitle"><span class="badge bg1">C1 · 10 let</span></div>
+      <div class="gdream">Váš sen:</div>
+      <div class="gname">${G.g1name}</div>
+      <div class="gval" style="color:${c1}">${fn(G.g1v)}</div>
+      <div style="font-size:11px;color:var(--tx3);margin-bottom:3px">Cíl: ${fkc(G.g1t)}</div>
+      <div class="pbar"><div class="pfill" style="width:${Math.min(g1p,100).toFixed(1)}%;background:${c1}"></div></div>
+      <div style="font-size:11px;color:var(--tx3)">${G.g1t>0?g1p.toFixed(0)+' % z cíle':'—'}${G.g1done?' — ✓':''}</div>
+    </div>
+    <div class="gcard">
+      <div class="gctitle"><span class="badge bg2">C2 · 30 let</span></div>
+      <div class="gdream">Váš sen:</div>
+      <div class="gname">${G.g2name}</div>
+      <div class="gval" style="color:${c2}">${fn(G.g2v)}</div>
+      <div style="font-size:11px;color:var(--tx3);margin-bottom:3px">Cíl: ${fkc(G.g2t)}</div>
+      <div class="pbar"><div class="pfill" style="width:${Math.min(g2p,100).toFixed(1)}%;background:${c2}"></div></div>
+      <div style="font-size:11px;color:var(--tx3)">${G.g2t>0?g2p.toFixed(0)+' % z cíle':'—'}</div>
+    </div>`;
+}
+
+function renderPortTab(){
+  const bt=(eid,obj,gv)=>{
+    const el=document.getElementById(eid);
+    let h='<table><thead><tr><th>Aktivum</th><th style="text-align:right">%</th><th style="text-align:right">Kč</th></tr></thead><tbody>';
+    ASSETS.forEach(a=>{
+      const p=obj[a.id]||0;
+      h+=`<tr><td><span style="display:inline-block;width:8px;height:8px;border-radius:2px;background:${a.color};margin-right:6px;vertical-align:middle"></span>${a.lbl}</td>
+        <td style="text-align:right">${p} %</td><td style="text-align:right">${fn(gv*p/100)}</td></tr>`;
+    });
+    el.innerHTML=h+'</tbody></table>';
+  };
+  bt('pt1',G.a1,G.g1v); bt('pt2',G.a2,G.g2v);
+  ['pie1','pie2'].forEach((id,i)=>{
+    if(CH[id]){CH[id].destroy();delete CH[id];}
+    const ao=i===0?G.a1:G.a2;
+    CH[id]=new Chart(document.getElementById(id),{type:'doughnut',
+      data:{labels:ASSETS.map(a=>a.sh),datasets:[{data:ASSETS.map(a=>ao[a.id]||0),backgroundColor:ASSETS.map(a=>a.color),borderColor:'#1a2e4a',borderWidth:2}]},
+      options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'right',labels:{color:'#8fa8c8',font:{size:10},boxWidth:8,padding:5}}}}});
+  });
+}
+
+const SC={responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+  scales:{y:{ticks:{color:'#5a7a9a',callback:v=>{const n=Math.abs(Math.round(v));return n>=1000000?(v/1000000).toFixed(1)+'M':n>=1000?(v/1000).toFixed(0)+'k':v}},grid:{color:'rgba(255,255,255,.05)'}},
+    x:{ticks:{color:'#5a7a9a',font:{size:9},maxRotation:45},grid:{color:'rgba(255,255,255,.05)'}}}};
+
+function updateCharts(){
+  if(!G.history.length) return;
+  const lbs=G.history.map(h=>h.lbl);
+  const g1v=G.history.map(h=>Math.round(h.g1v));
+  const g2v=G.history.map(h=>Math.round(h.g2v));
+  const rg2=G.history.map(h=>Math.round(h.realG2));
+  const inv=G.history.map(h=>Math.round(h.totalInv));
+  const tg2=G.history.map(()=>Math.round(G.g2t));
+
+  // Cíl 1 — jen roky 1–10
+  const l1=lbs.slice(0,Math.min(G.history.length,10));
+  if(CH.cg1) CH.cg1.destroy();
+  CH.cg1=new Chart(document.getElementById('cg1'),{type:'line',
+    data:{labels:l1,datasets:[
+      {data:g1v.slice(0,l1.length),borderColor:'#10b981',backgroundColor:'rgba(16,185,129,.1)',borderWidth:2,pointRadius:5,fill:true,tension:0.3},
+      {data:l1.map(()=>Math.round(G.g1t)),borderColor:'rgba(255,255,255,.2)',borderWidth:1,borderDash:[4,3],pointRadius:0,fill:false},
+    ]},options:{...SC}});
+
+  // Cíl 2
+  if(CH.cg2) CH.cg2.destroy();
+  CH.cg2=new Chart(document.getElementById('cg2'),{type:'line',
+    data:{labels:lbs,datasets:[
+      {label:'Nominální',data:g2v,borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.07)',borderWidth:2,pointRadius:2,fill:true,tension:0.3},
+      {label:'Reálná',data:rg2,borderColor:'#f59e0b',borderWidth:2,pointRadius:2,borderDash:[5,3],fill:false,tension:0.3},
+      {label:'Investováno',data:inv,borderColor:'#e879f9',backgroundColor:'rgba(232,121,249,.05)',borderWidth:2,pointRadius:2,borderDash:[2,4],fill:true,tension:0.1},
+      {label:'Cíl',data:tg2,borderColor:'rgba(16,185,129,.35)',borderWidth:1,borderDash:[3,3],pointRadius:0,fill:false},
+    ]},options:{...SC}});
+
+  // Returns — posledních 5
+  const n=Math.min(G.history.length,5);
+  const rh=G.history.slice(-n);
+  if(CH.cret) CH.cret.destroy();
+  CH.cret=new Chart(document.getElementById('cret'),{type:'bar',
+    data:{labels:rh.map(h=>h.lbl),datasets:ASSETS.map(a=>({label:a.sh,data:rh.map(h=>parseFloat(h.ret[a.id].toFixed(1))),backgroundColor:a.color}))},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{display:true,labels:{color:'#8fa8c8',font:{size:10},boxWidth:8,padding:5}}},
+      scales:{x:{ticks:{color:'#5a7a9a',font:{size:10}},grid:{color:'rgba(255,255,255,.05)'}},
+        y:{ticks:{color:'#5a7a9a',callback:v=>v+'%'},grid:{color:'rgba(255,255,255,.05)'}}}}});
+}
+
+function renderHistTable(){
+  const el=document.getElementById('histtbl');
+  if(!G.history.length){el.innerHTML='<p style="font-size:12px;color:var(--tx3);padding:8px 0">Zatím žádná kola.</p>';return;}
+  let h='<table><thead><tr><th>Rok</th><th style="text-align:right">C1 (Kč)</th><th style="text-align:right">Výn. C1</th><th style="text-align:right">C2 (Kč)</th><th style="text-align:right">Výn. C2</th><th style="text-align:right">G2 reál.</th><th style="text-align:right">Inv. cel.</th><th>Poznámka</th></tr></thead><tbody>';
+  G.history.forEach(hh=>{
+    const c1=hh.g1r>=0?'#10b981':'#ef4444',c2=hh.g2r>=0?'#10b981':'#ef4444';
+    h+=`<tr ${hh.crisis?'class="crr"':''}><td>${hh.lbl}${hh.crisis?' ⚠':''}</td>
+      <td style="text-align:right">${fn(hh.g1v)}</td><td style="text-align:right;color:${c1}">${fp(hh.g1r)}</td>
+      <td style="text-align:right">${fn(hh.g2v)}</td><td style="text-align:right;color:${c2}">${fp(hh.g2r)}</td>
+      <td style="text-align:right;color:var(--amber)">${fn(hh.realG2)}</td>
+      <td style="text-align:right;color:var(--tx2)">${fn(hh.totalInv)}</td>
+      <td style="color:var(--tx2);font-family:inherit;font-size:10px">${hh.note||''}</td></tr>`;
+  });
+  el.innerHTML=h+'</tbody></table>';
+}
+
+// ══════════════════════════════════════════════════════════════════
+// RESULTS
+// ══════════════════════════════════════════════════════════════════
+function showResults(){
+  document.getElementById('game-panel').classList.add('hidden');
+  document.getElementById('results-panel').classList.remove('hidden');
+  const dn=document.getElementById('display-name');
+  if(dn) dn.textContent=G.participantName||'—';
+  const btnS=document.getElementById('btn-sheets');
+  if(btnS){btnS.disabled=false;btnS.innerHTML='<span>📊</span> Odeslat do Google Tabulky';}
+  const ss=document.getElementById('sheets-status');
+  if(ss) ss.style.display='none';
+
+  const ft=G.g2v,ti=G.totalInv;
+  const x1=getXIRR1(),x2=getXIRR2();
+  const rf=ft/G.cumInfl,il=ft-rf,gn=ft-ti;
+  const g1ok=G.g1fv>=G.g1t,g2ok=ft>=G.g2t;
+  const g1p=G.g1t>0?(G.g1fv/G.g1t*100).toFixed(0):'—';
+  const g2p=G.g2t>0?(ft/G.g2t*100).toFixed(0):'—';
+
+  document.getElementById('fstats').innerHTML=`
+    <div class="metric"><div class="mlabel">Finální portfolio</div><div class="mval bl">${fn(ft)}</div></div>
+    <div class="metric"><div class="mlabel">XIRR C1</div><div class="mval ${x1!==null&&x1>=0?'gr':'rd'}">${fpp(x1)}</div></div>
+    <div class="metric"><div class="mlabel">XIRR C2 (30 let)</div><div class="mval ${x2!==null&&x2>=0?'gr':'rd'}">${fpp(x2)}</div></div>
+    <div class="metric"><div class="mlabel">Reálná hodnota</div><div class="mval am">${fn(rf)}</div></div>
+    <div class="metric"><div class="mlabel">Čistý výnos</div><div class="mval ${gn>=0?'gr':'rd'}">${gn>=0?'+':''}${fn(gn)}</div></div>`;
+  document.getElementById('f-inv').textContent=fkc(ti);
+  document.getElementById('f-val').textContent=fkc(ft);
+
+  // Final chart
+  const lbs=G.history.map(h=>h.lbl);
+  if(CH.fchart) CH.fchart.destroy();
+  CH.fchart=new Chart(document.getElementById('fchart'),{type:'line',
+    data:{labels:lbs,datasets:[
+      {label:'Nominální',data:G.history.map(h=>Math.round(h.g2v)),borderColor:'#3b82f6',backgroundColor:'rgba(59,130,246,.08)',borderWidth:2,pointRadius:1,fill:true,tension:0.3},
+      {label:'Reálná',data:G.history.map(h=>Math.round(h.realG2)),borderColor:'#f59e0b',borderWidth:2,pointRadius:1,borderDash:[5,3],fill:false,tension:0.3},
+      {label:'Investováno',data:G.history.map(h=>Math.round(h.totalInv)),borderColor:'#e879f9',backgroundColor:'rgba(232,121,249,.05)',borderWidth:2,pointRadius:1,borderDash:[2,4],fill:true,tension:0.1},
+      {label:'Cíl',data:G.history.map(()=>Math.round(G.g2t)),borderColor:'rgba(16,185,129,.4)',borderWidth:1,borderDash:[3,3],pointRadius:0,fill:false},
+    ]},options:{...SC}});
+
+  document.getElementById('fmetrics').innerHTML=`
+    <div class="ri"><span class="rl">Počáteční kapitál</span><span class="rv">${fkc(G.cap)}</span></div>
+    <div class="ri"><span class="rl">Celkem investováno</span><span class="rv">${fkc(ti)}</span></div>
+    <div class="ri"><span class="rl">Finální hodnota</span><span class="rv" style="color:#93c5fd">${fkc(ft)}</span></div>
+    <div class="ri"><span class="rl">Čistý výnos</span><span class="rv" style="color:${gn>=0?'#10b981':'#ef4444'}">${gn>=0?'+':''}${fkc(gn)}</span></div>
+    <div class="ri"><span class="rl">XIRR Cíl 1 (10 let)</span><span class="rv" style="color:${x1!==null&&x1>=0?'#10b981':'#ef4444'}">${fpp(x1)}</span></div>
+    <div class="ri"><span class="rl">XIRR Cíl 2 (30 let)</span><span class="rv" style="color:${x2!==null&&x2>=0?'#10b981':'#ef4444'}">${fpp(x2)}</span></div>
+    <div class="ri"><span class="rl">Reálná finální hodnota</span><span class="rv">${fkc(rf)}</span></div>
+    <div class="ri"><span class="rl">Ztráta inflací (30 let)</span><span class="rv" style="color:#f59e0b">−${fkc(il)}</span></div>`;
+
+  document.getElementById('fgoals').innerHTML=`
+    <div class="ri"><span class="rl"><span class="badge bg1" style="margin-right:5px">C1</span>${G.g1name}</span><span class="rv" style="color:${g1ok?'#10b981':'#ef4444'}">${g1p} % ${g1ok?'✓':'✗'}</span></div>
+    <div class="ri"><span class="rl"><span class="badge bg2" style="margin-right:5px">C2</span>${G.g2name}</span><span class="rv" style="color:${g2ok?'#10b981':'#ef4444'}">${g2p} % ${g2ok?'✓':'✗'}</span></div>
+    <div class="ri"><span class="rl">Reálná hodnota G2</span><span class="rv">${fkc(rf)}</span></div>`;
+
+  document.getElementById('flesson').textContent=g2ok
+    ?`🏆 Gratulace! Dosáhli jste cíle „${G.g2name}" za 30 let reálných trhů. Přežili jste dot-com krach, finanční krizi 2008, COVID i inflaci 2022. XIRR ${fpp(x2)} měří vaši skutečnou výkonnost. Zůstaňte investováni — čas je vaší nejsilnější zbraní.`
+    :`📚 30letého cíle jste nedosáhli. Klíčová lekce: krize jsou přechodné, ale investovat musíte přes ně. Kdo přestal v roce 2002 nebo 2008, přišel o největší odrazy. XIRR ${fpp(x2)} vs. inflace ${G.inf} % — rozdíl dělá rebalancování a pravidelné investice.`;
+
+  // Auto-send
+  sendToSheetsAuto();
+  // Odhalení historické mapy
+  buildRevealTable();
+}
+
+// ══════════════════════════════════════════════════════════════════
+// HISTORICKÉ ODHALENÍ — po dokončení hry
+// ══════════════════════════════════════════════════════════════════
+function buildRevealTable(){
+  const el=document.getElementById('reveal-table');
+  if(!el) return;
+
+  // Charakteristika jednotlivých etap
+  const eraDesc={
+    'Technologický boom 90. let':       'Prudký vzestup internetu a technologických akcií. Trhy rostly nebývale rychle, valuace byly výrazně nadhodnocené.',
+    'Dot-com euforie — vrchol bubliny': 'Spekulativní horečka kolem internetových firem dosáhla vrcholu. Akcie technologických startupů obchodovány za absurdní násobky.',
+    'Dot-com krize':                    'Bublina internetových firem praskla. Nasdaq ztratil přes 75 % hodnoty, mnoho firem zkrachovalo. Trvalo 3 roky.',
+    'Oživení po dot-com krizi':         'Trhy se postupně vzpamatovaly. Vedla ropná aktiva, rozvíjející se trhy a nemovitosti.',
+    'Předkrizový boom nemovitostí':     'Realitní trh v USA se přehříval, hypoteční produkty byly rizikové. Akcie rostly, ale pod povrchem se hromadily problémy.',
+    'Globální finanční krize':          'Krach hypotečního trhu v USA strhával celý finanční systém. Lehman Brothers padl, vlády zachraňovaly banky. Nejhorší krize od roku 1929.',
+    'Oživení po finanční krizi':        'Centrální banky floatovaly trhy levnými penězi (QE). Akcie se zotavovaly, dluhopisy klesaly na historická minima výnosů.',
+    'Evropská dluhová krize':           'Řecko, Irsko, Španělsko a Itálie bojovaly s dluhovými problémy. ECB zachránila eurozónu sloganem „whatever it takes".',
+    'Stabilizace a nový růst':          'Ekonomika stabilizována, akcie zahájily nový dlouhý býčí trh. Technologické firmy (FAANG) táhly výnosy nahoru.',
+    'Obchodní války USA–Čína':          'Trumpova administrativa zavedla cla na čínské zboží. Trhy volatilní, nejistota ohledně globálního obchodu.',
+    'Komoditní krize a Čína':           'Cena ropy se zhroutila o 70 %. Čínská ekonomika zpomalila, obavy z tvrdého přistání.',
+    'Nový technologický boom':          'Technologické megafirmy (Apple, Amazon, Google, Microsoft) dominovaly trhům. Valuace opět napnuté.',
+    'Pandemická krize COVID-19':        'Globální lockdowny způsobily nejrychlejší propad trhů v historii (-34 % za 33 dní). Centrální banky reagovaly masivně, trhy se odrazily do konce roku.',
+    'Post-COVID boom':                  'Masivní fiskální stimuly a uvolněná měnová politika vypustily inflaci. REIT a komodity explodovaly vzhůru.',
+    'Inflační krize':                   'Fed a ECB zvyšovaly sazby nejrychleji za 40 let. Dluhopisy zaznamenaly historické ztráty, akcie korigovaly.',
+    'Oživení po inflaci':               'Inflace klesala, trhy se vzpamatovaly. Technologie táhly S&P 500 k novým maximům.',
+    'Nová AI éra':                      'Umělá inteligence (ChatGPT, LLM revoluce) přepsala valuace technologického sektoru. Nvidia a další AI firmy dosáhly historických maxim.',
+  };
+
+  // Skupiny era pro barevné odlišení
+  const eraColors={
+    'Technologický boom 90. let':'rgba(59,130,246,.12)',
+    'Dot-com euforie — vrchol bubliny':'rgba(239,68,68,.08)',
+    'Dot-com krize':'rgba(239,68,68,.15)',
+    'Oživení po dot-com krizi':'rgba(16,185,129,.1)',
+    'Předkrizový boom nemovitostí':'rgba(245,158,11,.1)',
+    'Globální finanční krize':'rgba(239,68,68,.18)',
+    'Oživení po finanční krizi':'rgba(16,185,129,.1)',
+    'Evropská dluhová krize':'rgba(239,68,68,.12)',
+    'Stabilizace a nový růst':'rgba(16,185,129,.08)',
+    'Obchodní války USA–Čína':'rgba(245,158,11,.1)',
+    'Komoditní krize a Čína':'rgba(245,158,11,.1)',
+    'Nový technologický boom':'rgba(59,130,246,.1)',
+    'Pandemická krize COVID-19':'rgba(239,68,68,.18)',
+    'Post-COVID boom':'rgba(16,185,129,.1)',
+    'Inflační krize':'rgba(239,68,68,.15)',
+    'Oživení po inflaci':'rgba(16,185,129,.08)',
+    'Nová AI éra':'rgba(139,92,246,.12)',
+  };
+
+  let rows='';
+  let prevEra='';
+  ROUNDS.forEach((rd,i)=>{
+    const isCrisis=rd.crisis||false;
+    const eraChanged=rd.era!==prevEra;
+    const bgEra=eraColors[rd.era]||'transparent';
+    const hist=G.history[i];
+    const g2ret=hist?fp(hist.g2r):'—';
+    const g2col=hist&&hist.g2r>=0?'#10b981':'#ef4444';
+
+    rows+=`<tr class="${isCrisis?'crisis-row':''}" style="background:${bgEra}">
+      <td class="rnd-num">${rd.l}</td>
+      <td class="rnd-yr">${rd.yr}</td>
+      <td>
+        ${eraChanged?`<div class="rnd-era">${rd.era}</div>`:`<div style="color:var(--tx3);font-size:11px">↳ ${rd.era}</div>`}
+        ${isCrisis?`<div class="rnd-crisis">⚠ ${rd.crisisName}</div>`:''}
+      </td>
+      <td style="color:${g2col};font-family:'JetBrains Mono',monospace;font-size:11px;text-align:right">${g2ret}</td>
+    </tr>`;
+    prevEra=rd.era;
+  });
+
+  // Popis etap
+  const erasShown=[...new Set(ROUNDS.map(r=>r.era))];
+  const eraDescHtml=erasShown.map(era=>{
+    const desc=eraDesc[era]||'';
+    const isCrisisEra=era.toLowerCase().includes('krize')||era.toLowerCase().includes('krach')||era.toLowerCase().includes('pandemická')||era.toLowerCase().includes('inflační');
+    return `<div style="margin-bottom:10px;padding:8px 12px;border-radius:var(--rs);background:${eraColors[era]||'rgba(255,255,255,.04)'};border:.5px solid rgba(255,255,255,.08)">
+      <div style="font-size:12px;font-weight:600;color:${isCrisisEra?'#fca5a5':'var(--tx)'};margin-bottom:3px">${isCrisisEra?'⚠ ':''} ${era}</div>
+      <div style="font-size:12px;color:var(--tx2);line-height:1.6">${desc}</div>
+    </div>`;
+  }).join('');
+
+  el.innerHTML=`
+    <div class="tscroll" style="margin-bottom:1.25rem">
+      <table class="rtbl">
+        <thead><tr>
+          <th>Kolo</th><th>Reálný rok</th><th>Historická etapa / Krize</th><th style="text-align:right">Výnos C2</th>
+        </tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <div class="ctitle" style="margin-bottom:.75rem">📚 Charakteristika historických etap</div>
+    ${eraDescHtml}`;
+}
+
+// ══════════════════════════════════════════════════════════════════
+// TABS & RESET
+// ══════════════════════════════════════════════════════════════════
+function showTab(nm){
+  ['ov','po','ch','hi'].forEach(t=>{const el=document.getElementById('tab-'+t);if(el)el.classList.toggle('hidden',t!==nm);});
+  document.querySelectorAll('.tab').forEach((b,i)=>b.classList.toggle('active',['ov','po','ch','hi'][i]===nm));
+  if(nm==='po') renderPortTab();
+  if(nm==='ch') setTimeout(updateCharts,50);
+}
+
+function resetGame(){
+  G={}; alloc1=mkA0(); alloc2=mkA0(); ra1=mkA0(); ra2=mkA0();
+  Object.values(CH).forEach(c=>{try{c.destroy();}catch(e){}});
+  CH={};
+  document.getElementById('rov').classList.remove('open');
+  document.getElementById('yrov').classList.remove('open');
+  document.getElementById('setup-panel').classList.remove('hidden');
+  document.getElementById('game-panel').classList.add('hidden');
+  document.getElementById('results-panel').classList.add('hidden');
+  buildAlloc('a1rows',alloc1,'a1fill','a1tot','w1');
+  buildAlloc('a2rows',alloc2,'a2fill','a2tot','w2');
+  ['n-cap','n-inf','n-mon','n-g1t','n-g1s','n-g2t'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  ['s-cap','s-inf','s-mon','s-g1t','s-g1s','s-g2t'].forEach(id=>{const el=document.getElementById(id);if(el)el.value=0;});
+  ['g1name','g2name','participant-name'].forEach(id=>{const el=document.getElementById(id);if(el)el.value='';});
+  document.getElementById('annual-prev').textContent='0 Kč';
+  document.getElementById('g2rem').textContent='100';
+}
+
+// ══════════════════════════════════════════════════════════════════
+// EXPORT — Google Sheets + TXT
+// ══════════════════════════════════════════════════════════════════
+function buildExportData(){
+  const ft=G.g2v,ti=G.totalInv;
+  const x1=getXIRR1(),x2=getXIRR2();
+  const rf=ft/G.cumInfl,il=ft-rf,gn=ft-ti;
+  const g1ok=G.g1fv>=G.g1t,g2ok=ft>=G.g2t;
+  return {
+    name:G.participantName||'—', variant:'30let',
+    g1name:G.g1name, g1target:Math.round(G.g1t), g1value:Math.round(G.g1fv),
+    g1pct:G.g1t>0?parseFloat((G.g1fv/G.g1t*100).toFixed(1)):0,
+    xirr1:x1!==null?parseFloat(x1.toFixed(2)):null, g1ok,
+    g2name:G.g2name, g2target:Math.round(G.g2t), g2value:Math.round(ft),
+    g2real:Math.round(rf), g2pct:G.g2t>0?parseFloat((ft/G.g2t*100).toFixed(1)):0,
+    xirr2:x2!==null?parseFloat(x2.toFixed(2)):null, g2ok,
+    capital:Math.round(G.cap), totalInvested:Math.round(ti),
+    netGain:Math.round(gn), inflation:G.inf, inflationLoss:Math.round(il),
+  };
+}
+
+function buildParams(d){
+  return new URLSearchParams({
+    name:d.name,g1name:d.g1name,g1target:d.g1target,g1value:d.g1value,
+    g1pct:d.g1pct,xirr1:d.xirr1!==null?d.xirr1:'',g1ok:d.g1ok?'1':'0',
+    g2name:d.g2name,g2target:d.g2target,g2value:d.g2value,g2real:d.g2real,
+    g2pct:d.g2pct,xirr2:d.xirr2!==null?d.xirr2:'',g2ok:d.g2ok?'1':'0',
+    capital:d.capital,totalInvested:d.totalInvested,netGain:d.netGain,
+    inflation:d.inflation,inflationLoss:d.inflationLoss,
+  });
+}
+
+function sendViaImgPing(params,onSuccess,onError){
+  const url=`${APPS_SCRIPT_URL}?${params.toString()}`;
+  const img=new Image(); let settled=false;
+  const done=(ok)=>{if(settled)return;settled=true;ok?onSuccess():onError();};
+  img.onload=()=>done(true); img.onerror=()=>done(true);
+  setTimeout(()=>done(false),8000);
+  img.src=url;
+}
+
+async function sendViaFetch(params){
+  const url=`${APPS_SCRIPT_URL}?${params.toString()}`;
+  try{
+    // Zkusíme CORS fetch — dostaneme reálnou odpověď
+    const r=await fetch(url,{method:'GET',mode:'cors'});
+    if(r.ok){
+      const txt=await r.text();
+      return txt.startsWith('OK'); // "OK:ready" nebo "OK:5"
+    }
+    return false;
+  }catch(e1){
+    // CORS zablokoval — no-cors (žádná odpověď ale request projde)
+    try{
+      await fetch(url,{method:'GET',mode:'no-cors'});
+      return true;
+    }catch(e2){return null;}
+  }
+}
+
+async function sendToSheetsAuto(){
+  if(!APPS_SCRIPT_URL||APPS_SCRIPT_URL.includes('VLOŽTE_SEM')) return;
+  const ss=document.getElementById('sheets-status'),btnS=document.getElementById('btn-sheets');
+  if(ss){ss.className='status-loading';ss.style.display='block';ss.textContent='⏳ Automaticky odesílám výsledky…';}
+  const params=buildParams(buildExportData());
+  const fr=await sendViaFetch(params);
+  if(fr===true){
+    if(btnS) btnS.innerHTML='✓ Automaticky odesláno';
+    if(ss){ss.className='status-ok';ss.textContent=`✓ Výsledky odeslány (${new Date().toLocaleTimeString('cs-CZ')})`;}
+  } else {
+    sendViaImgPing(params,
+      ()=>{if(btnS)btnS.innerHTML='✓ Automaticky odesláno';if(ss){ss.className='status-ok';ss.textContent=`✓ Odesláno (${new Date().toLocaleTimeString('cs-CZ')})`;} },
+      ()=>{if(ss){ss.className='status-err';ss.textContent='⚠ Automatické odeslání selhalo — klikněte níže.';}}
+    );
+  }
+}
+
+async function sendToSheets(){
+  const btn=document.getElementById('btn-sheets'),status=document.getElementById('sheets-status');
+  btn.disabled=true;btn.innerHTML='⏳ Odesílám…';
+  status.className='status-loading';status.style.display='block';status.textContent='Odesílám…';
+  const params=buildParams(buildExportData());
+  const fr=await sendViaFetch(params);
+  if(fr===true){status.className='status-ok';status.textContent=`✓ Odesláno! (${new Date().toLocaleTimeString('cs-CZ')})`;btn.innerHTML='✓ Odesláno';}
+  else{sendViaImgPing(params,
+    ()=>{status.className='status-ok';status.textContent=`✓ Odesláno!`;btn.innerHTML='✓ Odesláno';},
+    ()=>{status.className='status-err';status.textContent='✗ Selhalo. Stáhněte TXT.';btn.disabled=false;btn.innerHTML='📊 Zkusit znovu';}
+  );}
+}
+
+function downloadTXT(){
+  const d=buildExportData();
+  const now=new Date().toLocaleString('cs-CZ',{timeZone:'Europe/Prague'});
+  const sep='─'.repeat(52);
+  const lines=[
+    '╔════════════════════════════════════════════════════╗',
+    '║      INVEST GYM 30 LET — VÝSLEDEK SIMULACE        ║',
+    '║       Reálná historická data 1996–2025             ║',
+    '╚════════════════════════════════════════════════════╝',
+    '',`  Datum a čas:    ${now}`,`  Účastník:       ${d.name}`,'',
+    sep,'  NASTAVENÍ SIMULACE',sep,
+    `  Počáteční kapitál:    ${d.capital.toLocaleString('cs-CZ')} Kč`,
+    `  Roční inflace:        ${d.inflation} %`,
+    `  Celkem investováno:   ${d.totalInvested.toLocaleString('cs-CZ')} Kč`,'',
+    sep,`  CÍL 1 — "${d.g1name}"  (10 let, 1996–2005)`,sep,
+    `  Cílová částka:        ${d.g1target.toLocaleString('cs-CZ')} Kč`,
+    `  Dosažená hodnota:     ${d.g1value.toLocaleString('cs-CZ')} Kč`,
+    `  Splněno:              ${d.g1pct} %   ${d.g1ok?'✓ SPLNĚNO':'✗ NESPLNĚNO'}`,
+    `  XIRR:                 ${d.xirr1!==null?d.xirr1+' %':'—'}`,'',
+    sep,`  CÍL 2 — "${d.g2name}"  (30 let, 1996–2025)`,sep,
+    `  Cílová částka:        ${d.g2target.toLocaleString('cs-CZ')} Kč`,
+    `  Dosažená hodnota:     ${d.g2value.toLocaleString('cs-CZ')} Kč`,
+    `  Reálná hodnota:       ${d.g2real.toLocaleString('cs-CZ')} Kč`,
+    `  Splněno:              ${d.g2pct} %   ${d.g2ok?'✓ SPLNĚNO':'✗ NESPLNĚNO'}`,
+    `  XIRR:                 ${d.xirr2!==null?d.xirr2+' %':'—'}`,'',
+    sep,'  CELKOVÉ VÝSLEDKY',sep,
+    `  Čistý výnos:          ${d.netGain>=0?'+':''}${d.netGain.toLocaleString('cs-CZ')} Kč`,
+    `  Ztráta inflací:       -${d.inflationLoss.toLocaleString('cs-CZ')} Kč`,'',
+    sep,'  Invest Gym 30 let · Reálná data 1996–2025',sep,
+  ];
+  const blob=new Blob([lines.join('\n')],{type:'text/plain;charset=utf-8'});
+  const url=URL.createObjectURL(blob);
+  const a=document.createElement('a');
+  a.href=url;
+  a.download=`InvestGym30_${(d.name||'vysledek').replace(/[^a-zA-Z0-9]/g,'_')}_${new Date().toISOString().slice(0,10)}.txt`;
+  document.body.appendChild(a);a.click();document.body.removeChild(a);URL.revokeObjectURL(url);
+}
+
+// ══════════════════════════════════════════════════════════════════
+// INIT
+// ══════════════════════════════════════════════════════════════════
+sync('s-cap','n-cap');
+sync('s-inf','n-inf');
+sync('s-mon','n-mon',()=>document.getElementById('annual-prev').textContent=fkc((parseFloat(document.getElementById('n-mon').value)||0)*12));
+sync('s-g1t','n-g1t');
+sync('s-g2t','n-g2t');
+sync('s-g1s','n-g1s',()=>{
+  const v=parseInt(document.getElementById('s-g1s').value)||0;
+  document.getElementById('g2rem').textContent=100-v;
+  document.getElementById('n-g1s').value=v;
+});
+buildAlloc('a1rows',alloc1,'a1fill','a1tot','w1');
+buildAlloc('a2rows',alloc2,'a2fill','a2tot','w2');
+</script>
+</body>
+</html>
